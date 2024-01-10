@@ -2,8 +2,7 @@ from flask import Flask, render_template, request
 import google.generativeai as genai
 import ast
 import numpy as np
-import model_org as md
-
+import joblib
 
 GOOGLE_API_KEY = "AIzaSyDox1ipebTDKbAgqKsRXlPARIpT1kDnvek"
 genai.configure(api_key=GOOGLE_API_KEY)
@@ -16,7 +15,7 @@ for m in genai.list_models():
 
 
 model = genai.GenerativeModel('gemini-pro')
-code = """
+code_ = """
 def unreliable_function(a, b, c, d, e, f, g, h, i, j, k, l, m):
     # High cyclomatic complexity with nested if statements
     if a > 0:
@@ -42,49 +41,66 @@ def unreliable_function(a, b, c, d, e, f, g, h, i, j, k, l, m):
     return a + b + c + d + e + f + g + h + i + j + k + l + m
 """
 
-# Craft a prompt for Gemini, clearly requesting code complexity analysis
+# Define the features and corresponding formulas
+features_formulas = {
+    0: 'count(lines with only white spaces)',
+    1: 'count(decision points)',
+    2: 'count(pairs of functions calling each other)',
+    3: 'count(lines with both code and comments)',
+    4: 'count(lines with only comments)',
+    5: 'count(conditions)',
+    6: 'E - N + 2P, where E is the number of edges, N is the number of nodes, and P is the number of connected components',
+    7: 'CYCLOMATIC_COMPLEXITY / NUMBER_OF_LINES',
+    8: 'count(decision points)',
+    9: 'DECISION_COUNT / NUMBER_OF_LINES',
+    10: 'a metric based on design characteristics',
+    11: 'DESIGN_COMPLEXITY / NUMBER_OF_LINES',
+    12: 'count(edges in the control flow graph)',
+    13: 'a metric based on essential characteristics',
+    14: 'ESSENTIAL_COMPLEXITY / NUMBER_OF_LINES',
+    15: 'count(lines with executable code)',
+    16: 'count(parameters in function/method definitions)',
+    17: 'n1 * log2(n1) + n2 * log2(n2), where n1 is the number of distinct operators, and n2 is the number of distinct operands',
+    18: '(n1 / 2) * (N2 / n2), where n1 is the number of distinct operators, N2 is the total number of operators and operands, and n2 is the number of distinct operands',
+    19: 'HALSTEAD_DIFFICULTY * HALSTEAD_VOLUME',
+    20: 'HALSTEAD_EFFORT / 3000',
+    21: 'N',
+    22: '2 * (n2 / N2) * (N / n1), where n1 is the number of distinct operators, N2 is the total number of operators and operands, and n2 is the number of distinct operands',
+    23: 'HALSTEAD_EFFORT / 18',
+    24: 'N * log2(n1 + n2), where N is the total number of operators and operands, n1 is the number of distinct operators, and n2 is the number of distinct operands',
+    25: 'a metric based on maintenance characteristics',
+    26: 'count(modified conditions)',
+    27: 'count(multiple conditions)',
+    28: 'count(nodes in the control flow graph)',
+    29: 'CYCLOMATIC_COMPLEXITY / NODE_COUNT',
+    30: 'count(operands)',
+    31: 'count(operators)',
+    32: 'count(unique operands)',
+    33: 'count(unique operators)',
+    34: 'count(lines)',
+    35: '(LOC_COMMENTS / NUMBER_OF_LINES) * 100',
+    36: 'NUMBER_OF_LINES',
+}
 
+# Load the selected features
+selected_features = np.load('selected_features.npy')
+
+# Get the selected feature indices and their corresponding formulas
+selected_feature_formulas = {index: features_formulas[index] for index in selected_features}
+
+print(selected_feature_formulas)
 
 
 
 
 @app.route("/")
 def index():
-    # code = request.form.get("code")
+    code = request.form.get("code")
     global prompt
     prompt = f"""
     Analyze the following Python code and calculate the following metrics using the specified formulae:
 
-    LOC_COMMENTS (Lines of Code in Comments):
-    Calculation: Count of lines in a program that are comments or documentation.
-    CYCLOMATIC_COMPLEXITY:
-    Calculation: Measure of the number of independent paths through a program's source code.
-    Formula: M = E - N + 2P, where M is cyclomatic complexity, E is the number of edges in the flow graph, N is the number of nodes, and P is the number of connected components.
-    DESIGN_COMPLEXITY:
-    Calculation: An overall measure of the complexity of the program's design.
-    Note: This can vary depending on the specific metric used in a given context, as there are multiple ways to measure design complexity.
-    HALSTEAD_CONTENT:
-    Calculation: Measure of the information content of the program.
-    Formula: h = N * log2(n) + n * log2(N), where N is the total number of operators and operands, and n is the number of unique operators and operands.
-    HALSTEAD_EFFORT:
-    Calculation: Measure of the effort required to develop the program.
-    Formula: E = V * D, where V is the program's volume (Halstead's volume) and D is the difficulty (a measure of how hard it is to understand the program).
-    HALSTEAD_ERROR_EST:
-    Calculation: An estimate of the number of errors in the program.
-    Formula: B = E / 3000, where B is the estimated number of bugs and E is the program's effort.
-    HALSTEAD_LENGTH:
-    Calculation: Measure of the total number of operators and operands in the program.
-    Formula: N = N1 + N2, where N1 is the number of distinct operators and N2 is the number of distinct operands.
-    HALSTEAD_LEVEL:
-    Calculation: A measure of the program's level of abstraction.
-    Formula: L = 2 / V * D, where V is the program's volume and D is the difficulty.
-    HALSTEAD_PROG_TIME:
-    Calculation: Estimate of the time it would take to code the program.
-    Formula: T = E / 18, where T is the estimated time and E is the program's effort.
-    NUM_OPERANDS:
-    Calculation: Count of the number of operands in the program.
-    LOC_TOTAL:
-    Calculation: Total lines of code in the program, including both comments and executable code.
+    {selected_feature_formulas}
 
     {code}
     """
@@ -99,27 +115,7 @@ def predict():
 
     prompt_ = f"""
     Make a numpy array for the values calculated for below features and if any value is not applicable, replace it with 0 instead of nan.
-    LOC_COMMENTS (Lines of Code in Comments)
-
-    CYCLOMATIC_COMPLEXITY
-
-    DESIGN_COMPLEXITY
-
-    HALSTEAD_CONTENT (h)
-
-    HALSTEAD_EFFORT (E)
-
-    HALSTEAD_ERROR_EST (B)
-
-    HALSTEAD_LENGTH (N)
-
-    HALSTEAD_LEVEL (L)
-
-    HALSTEAD_PROG_TIME (T)
-
-    NUM_OPERANDS
-
-    LOC_TOTAL
+    {selected_feature_formulas}
 
     Return just the numpy array as a string in the following format:
     "[value_1, value_2, value_3, ...]"
@@ -150,7 +146,10 @@ def predict():
     # ds = nds[selected_features_svm_cgwo]
 
     # ds = ds.reshape(1,-1)
-    p = md.svcclassifier.predict(nds)
+    # p = md.svcclassifier.predict(nds)
+    loaded_model = joblib.load('svm_model_gwo.joblib')
+    p = loaded_model.predict(nds)
+
     if p == 1 :
         prediction = "Reliable"
     else:
