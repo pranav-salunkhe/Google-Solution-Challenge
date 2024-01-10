@@ -3,8 +3,13 @@ import google.generativeai as genai
 import ast
 import numpy as np
 import joblib
+import os
+from dotenv import load_dotenv
 
-GOOGLE_API_KEY = "AIzaSyDox1ipebTDKbAgqKsRXlPARIpT1kDnvek"
+
+
+load_dotenv()
+GOOGLE_API_KEY = os.environ["GEMINI_API"]
 genai.configure(api_key=GOOGLE_API_KEY)
 
 app = Flask(__name__)
