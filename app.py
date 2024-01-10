@@ -87,7 +87,7 @@ selected_features = np.load('selected_features.npy')
 
 # Get the selected feature indices and their corresponding formulas
 selected_feature_formulas = {index: features_formulas[index] for index in selected_features}
-
+fea_size = len(selected_feature_formulas)
 print(selected_feature_formulas)
 
 
@@ -114,7 +114,7 @@ def predict():
     response = model.generate_content(prompt)
 
     prompt_ = f"""
-    Make a numpy array for the all values calculated for below features and if any value is not applicable, replace it with 0 instead of nan. Do not omit any of below feature values.
+    Make a numpy array for the all values calculated for below features and if any value is not applicable, replace it with 0 instead of nan. Do not omit any of below feature values. The numpy must have {fea_size} number of values.
     {selected_feature_formulas}
 
     Return just the numpy array as a string in the following format:
