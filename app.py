@@ -114,7 +114,7 @@ def predict():
     response = model.generate_content(prompt)
 
     prompt_ = f"""
-    Make a numpy array for the values calculated for below features and if any value is not applicable, replace it with 0 instead of nan.
+    Make a numpy array for the all values calculated for below features and if any value is not applicable, replace it with 0 instead of nan. Do not omit any of below feature values.
     {selected_feature_formulas}
 
     Return just the numpy array as a string in the following format:
