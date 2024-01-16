@@ -124,7 +124,7 @@ def predict():
         print(code)
         global prompt
         prompt = f"""
-        Analyze the following Python code and calculate the following metrics using the specified formulae:
+        Analyze the following code and calculate the following metrics using the specified formulae:
 
         {selected_feature_formulas}
 
