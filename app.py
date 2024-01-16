@@ -86,7 +86,19 @@ features_formulas = {
     35: '(LOC_COMMENTS / NUMBER_OF_LINES) * 100',
     36: 'NUMBER_OF_LINES',
 }
-
+features = ['LOC_BLANK', 'BRANCH_COUNT', 'CALL_PAIRS', 'LOC_CODE_AND_COMMENT',
+            'LOC_COMMENTS', 'CONDITION_COUNT', 'CYCLOMATIC_COMPLEXITY',
+            'CYCLOMATIC_DENSITY', 'DECISION_COUNT', 'DECISION_DENSITY',
+            'DESIGN_COMPLEXITY', 'DESIGN_DENSITY', 'EDGE_COUNT',
+            'ESSENTIAL_COMPLEXITY', 'ESSENTIAL_DENSITY', 'LOC_EXECUTABLE',
+            'PARAMETER_COUNT', 'HALSTEAD_CONTENT', 'HALSTEAD_DIFFICULTY',
+            'HALSTEAD_EFFORT', 'HALSTEAD_ERROR_EST', 'HALSTEAD_LENGTH',
+            'HALSTEAD_LEVEL', 'HALSTEAD_PROG_TIME', 'HALSTEAD_VOLUME',
+            'MAINTENANCE_SEVERITY', 'MODIFIED_CONDITION_COUNT',
+            'MULTIPLE_CONDITION_COUNT', 'NODE_COUNT',
+            'NORMALIZED_CYLOMATIC_COMPLEXITY', 'NUM_OPERANDS', 'NUM_OPERATORS',
+            'NUM_UNIQUE_OPERANDS', 'NUM_UNIQUE_OPERATORS', 'NUMBER_OF_LINES',
+            'PERCENT_COMMENTS', 'LOC_TOTAL']
 # Load the selected features
 selected_features = np.load('selected_features.npy')
 
@@ -117,7 +129,8 @@ def index():
 @app.route("/predict", methods=["POST"])
 def predict():
     response = model.generate_content(prompt)
-
+    global complexities
+    complexities = response.text
     prompt_ = f"""
     Make a numpy array for the all values calculated for below features and if any value is not applicable, replace it with 0 instead of nan. Do not omit any of below feature values. The numpy must have {fea_size} number of values.
     {selected_feature_formulas}
@@ -159,7 +172,7 @@ def predict():
         prediction = "Reliable"
     else:
         prediction = "Unreliable"
-
+    size = len(selected_features)
     # Retrieve user input from the form
     # user_input = [float(request.form.get("code"))]
 
@@ -177,7 +190,7 @@ def predict():
     # # Perform prediction
     # prediction = svcclassifier.predict(selected_user_input)
 
-    return render_template("result.html", prediction=prediction)
+    return render_template("result.html", prediction=prediction, np_array=np_array, selected_features=selected_features, size=size, features=features)
 
 if __name__ == "__main__":
     app.run(debug=True)
