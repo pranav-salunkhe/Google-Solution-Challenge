@@ -5,20 +5,151 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Software Reliability Prediction</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-okaidia.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/prism@1.25.0/components/prism-core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prism@1.25.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/prism@1.25.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <!-- Add these in the head of your HTML file -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.js"></script>
+    <!-- Add these in the head of your HTML file, adjust the theme and mode based on your preferences -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/theme/dracula.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/keymap/vim.min.js"></script>
+
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="../static/style.css">
+    
+    
+    
+    <style>
+        .loading-spinner {
+            display: none;
+        }
+    </style>
 </head>
-<body>
-    <h1>Software Reliability Prediction</h1>
-    <form action="/predict" method="post">
-        <!-- Dynamically generate input fields for features -->
-        <!-- {% for feature in features %}
-            <label for="{{ feature }}">{{ feature }}:</label>
-            <input type="text" name="{{ feature }}" required>
-        {% endfor %}
-         -->
-         Enter code:<br>
-         <input type="textarea" name="code" required/>
-        <br>
-        <button type="submit">Predict</button>
-    </form>
+<body class="text-gray-100 bg-black">
+    <div class="h-full w-full bg-slate-900 flex flex-col items-center justify-center">
+        <nav class="mx-4 p-8 bg-black w-full">
+            <div class="container mx-4 mt-1 flex items-center justify-between px-12">
+                <a href="/" class="text-lg font-bold">
+                    <div class="flex flex-row">
+                        <p class="text-3xl font-bold mb-1">Rel</p><p class="text-2xl font-bold mb-1 bg-gradient-to-r from-purple-800 via-violet-400 to-red-600 text-transparent bg-clip-text text-3xl">ai</p>
+                    </div>
+                </a>
+        
+                <!-- Mobile Menu Icon -->
+                <div class="block lg:hidden">
+                    <button id="mobile-menu-toggle" class="text-white hover:text-gray-300 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                </div>
+        
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex space-x-4">
+                    <a href="#what" class="hover:underline">What</a>
+                    <a href="#why" class="hover:underline">Why</a>
+                    <a href="#team" class="hover:underline">Team</a>
+                    <a href="#try" class="hover:underline">Try it out</a>
+                </div>
+            </div>
+        
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden lg:hidden">
+                <a href="#what" class="block p-2 hover:bg-gray-800">What</a>
+                <a href="#why" class="block p-2 hover:bg-gray-800">Why</a>
+                <a href="#team" class="block p-2 hover:bg-gray-800">Team</a>
+                <a href="#try" class="block p-2 hover:bg-gray-800">Try it out</a>
+            </div>
+        </nav>
+        <div class="grid grid-cols-2 space-x-10 justify-center items-center w-full h-full px-24 pb-12 pt-4">
+            <section id="what" class=" h-full login flex flex-col p-4">
+                <div class=" flex flex-row w-full p-12">
+                    <p class="text-5xl font-bold">What is Rel</p><p class="text-5xl font-bold mb-4 bg-gradient-to-r from-purple-800 via-violet-400 to-red-600 text-transparent bg-clip-text">ai</p>
+                </div>
+                <div class="flex justify-center items-center w-full p-12">
+                    <p class="text-justify flex-wrap text-xl opacity-95">Relai combines the <span class="text-xl font-bold mb-4 bg-gradient-to-r from-purple-800 via-violet-400 to-red-600 text-transparent bg-clip-text">Gemini API</span> with a <span class="text-xl font-bold mb-4 bg-gradient-to-r from-purple-800 via-violet-400 to-red-600 text-transparent bg-clip-text">Chaotic Grey Wolf Optimized Support Vector Machine (SVM)</span> model to assess the reliability of user-entered code. Utilizing code complexity metrics selected by the optimized SVM, the system offers a streamlined process for users to submit code snippets and receive automated evaluations of their software's dependability.</p>
+                </div>
+            </section>
+        
+            <section id="why" class=" h-full login flex flex-col p-4">
+                <div class=" flex flex-row w-full p-12">
+                    <p class="text-5xl font-bold">Why the <span class="text-5xl font-bold bg-gradient-to-r from-purple-800 via-violet-400 to-red-600 text-transparent bg-clip-text">need</span> for the tool</p>
+                    <!-- <p class="text-5xl font-bold bg-gradient-to-r from-purple-800 via-violet-400 to-red-600 text-transparent bg-clip-text">&nbsp;need&nbsp;</p>
+                    <p class="text-5xl font-bold"> for the tool?</p> -->
+                </div>
+                <div class="flex justify-center items-center w-full p-12">
+                    <p class="text-justify text-xl opacity-95">Relai addresses the challenge of increasing relevant skills for financial success by offering a reliable code assessment tool. By leveraging the Gemini API and a Chaotic Grey Wolf Optimized SVM model, the platform provides a means for individuals to evaluate and improve their coding proficiency, contributing to the promotion of lifelong learning and the development of ICT skills. This initiative aligns with the broader goal of building resilient and sustainable infrastructures, fostering innovation, and facilitating inclusive, safe, and sustainable urban development.</p>
+                </div>
+            </section>
+        </div>
+        <section id="try" class=" h-full w-full p-24">
+            <div class="login p-16">
+                <h1 class="flex text-2xl font-bold mb-4">Predict the <p class="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-800 via-violet-400 to-red-600 text-transparent bg-clip-text">&nbsp;reliability&nbsp;</p> of your code!</h1>
+                <form id="predictionForm" action="/predict" method="post" class="space-y-4">
+                    <label for="code" class="block text-sm font-medium text-gray-300">Enter code:</label>
+                    
+                    <!-- Add this in the body of your HTML file -->
+                    <div id="code-editor"></div>
+
+                    <textarea id="code" name="code" class="hidden"></textarea> 
+
+                    <!-- <textarea id="code" name="code" class="input overflow-hidden w-full border rounded-md language-python p-2"></textarea> -->
+                    <button type="submit" class="btn w-fit bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition duration-300">Predict</button>
+                </form>
+                <div id="loading" class="loading-spinner mt-4 text-center">
+                    <svg class="animate-spin h-5 w-5 text-blue-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014.418 15H2c1.378 0 2.632.557 3.536 1.464l1.414 1.414zM12 20c-1.046 0-2.09-.158-3.109-.464l-1.414-1.414A7.963 7.963 0 0112 4V0h2v4a7.963 7.963 0 01-1.464 4.418l-1.414 1.414c.905.905 2.159 1.463 3.536 1.463s2.631-.558 3.536-1.464l1.414-1.414A7.963 7.963 0 0122 12h-4v2h4a7.963 7.963 0 01-1.464 4.418l-1.414 1.414C17.09 19.842 14.046 20 12 20z"></path>
+                    </svg>
+                </div>
+            </div>
+        </section>
+        <section id="team" class=" h-full login flex flex-col p-4">
+            <div class=" flex flex-row justify-center w-full p-12">
+                <p class="text-5xl font-bold">Te</p><p class="text-5xl font-bold mb-4 bg-gradient-to-r from-purple-800 via-violet-400 to-red-600 text-transparent bg-clip-text">am</p>
+            </div>
+            <div class="flex flex-col justify-center items-center w-full p-4">
+                <img src="../static/me.jpeg" alt="Me" class="h-32 w-32 object-cover m-2 rounded-full"/> 
+                <p class="text-justify text-3xl mt-2">Pranav Salunkhe</p>
+                <p class="flex justify-center items-center text-md mb-2">pvsalunkhe2003@gmail.com</p>
+                <p class="flex justify-center items-center text-xl m-2">National Institute of Technology, Karnataka</p>
+            </div>
+        </section>
+    </div>
+    
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', function () {
+            document.getElementById('loading').style.display = 'block';
+        });
+        document.getElementById('mobile-menu-toggle').addEventListener('click', function () {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+            // Initialize CodeMirror with line numbers and Python mode
+        var editor = CodeMirror(document.getElementById('code-editor'), {
+            lineNumbers: true,
+            mode: 'text/x-python', // Change this to the desired language mode
+            theme: 'dracula' // Change this to the desired theme
+            // Enables vim keymap for dynamic highlighting
+        });
+        editor.on('change', function() {
+            // Update the hidden input with the current code
+            document.getElementById('code').innerText = editor.getValue();
+            const t = document.getElementById('code').innerText
+            console.log(t)
+        });
+    </script>
+
 </body>
 </html>
+
+

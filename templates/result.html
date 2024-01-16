@@ -3,17 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Result</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="../static/style.css">
 </head>
-<body>
-    Result {{prediction}}
-    <br>
-    Complexities 
-    <br>
-    {% for i in range(0, size) %}
-        <p>{{features[selected_features[i]]}}: {{np_array[i]}}</p>
-        <br>
-    {% endfor %}
-
+<body class="bg-black h-screen flex items-center justify-center">
+    <div class="max-w-md w-full login p-8 rounded shadow-md">
+        <h2 class="text-2xl font-bold mb-4 text-white">Your code is <span class="text-blue-500">{{ prediction }}!</span></h2>
+        <p class="mb-4 text-white">Here's why:</p>
+        <p class="mb-4 text-white">Complexities</p>
+        {% for i in range(0, size) %}
+            <div class="mb-2">
+                <p class="text-sm text-white">{{ features[selected_features[i]] }}: <span class="text-blue-500">{{ np_array[i] }}</span></p>
+                <p class="text-sm text-white">Calculated as: <span class="text-blue-500">{{features_formulas[i]}}</span></p>
+            </div>
+        {% endfor %}
+        <a href="/" class="block text-blue-500 hover:underline">Back to Home</a>
+    </div>
 </body>
 </html>
+
+

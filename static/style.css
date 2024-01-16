@@ -1,0 +1,64 @@
+@font-face {
+    font-family: ProductSansReg;
+    src: url("./product-sans/ProductSansRegular.ttf");
+}
+/* Font Credit/Citation : @Google */
+
+:root{
+    --main :#0a192f;
+    --mainlight: #172a46;
+    --white :#ccd6f6;
+    --cyan :#5ff0d0;
+    }
+*{
+    font-family: ProductSansReg;
+}
+.glow{
+    text-shadow: rebeccapurple 100px 100px 100px;
+}
+.login {
+    border: 1px solid var(--cyan);
+    background:var(--mainlight);
+    border-radius: 10px;
+}
+.textlabel {
+    text-shadow: var(--cyan) 0px 0px 6px;
+    text-align: start;
+ }
+ .input {
+   color: var(--cyan);
+   background-color: var(--main);
+   border:none;
+   border-radius: 10px;
+ }
+ .input:focus {
+   color: var(--cyan);
+   outline: none;
+   border: 1px solid var(--cyan);
+ }
+ .input:hover {
+   box-shadow: var(--cyan) 0px 0px 20px;
+   border: 1px solid var(--cyan)
+ }
+ 
+ .input :focus::-webkit-input-placeholder {
+     color:transparent;
+ }
+ .btn {
+    color:var(--cyan);
+    background-color: var(--mainlight);
+    border: 1px solid var(--cyan);
+    border-radius: 10px;
+    text-shadow: var(--cyan) 0px 0px 20px;
+    box-shadow: rgb(95, 240, 208, 15%)  0px 0px 50px;
+}
+.btn:hover {
+    color: var(--main);
+    background-color: var(--cyan);
+    cursor: pointer;
+    box-shadow: var(--cyan) 0px 0px 40px;
+} 
+
+textarea{
+    min-height: 500px;
+}

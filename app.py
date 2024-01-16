@@ -112,22 +112,24 @@ print(selected_feature_formulas)
 
 @app.route("/")
 def index():
-    code = request.form.get("code")
-    global prompt
-    prompt = f"""
-    Analyze the following Python code and calculate the following metrics using the specified formulae:
-
-    {selected_feature_formulas}
-
-    {code}
-    """
-
     return render_template("index.html")
 
 
 
 @app.route("/predict", methods=["POST"])
 def predict():
+    if request.method == "POST":
+        global code
+        code = request.form.get("code")
+        print(code)
+        global prompt
+        prompt = f"""
+        Analyze the following Python code and calculate the following metrics using the specified formulae:
+
+        {selected_feature_formulas}
+
+        {code}
+        """
     response = model.generate_content(prompt)
     global complexities
     complexities = response.text
@@ -190,7 +192,7 @@ def predict():
     # # Perform prediction
     # prediction = svcclassifier.predict(selected_user_input)
 
-    return render_template("result.html", prediction=prediction, np_array=np_array, selected_features=selected_features, size=size, features=features)
+    return render_template("result.html", prediction=prediction, np_array=np_array, selected_features=selected_features, size=size, features=features, features_formulas=features_formulas, code=code)
 
 if __name__ == "__main__":
     app.run(debug=True)

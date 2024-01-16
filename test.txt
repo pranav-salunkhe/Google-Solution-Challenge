@@ -1,0 +1,40 @@
+def unreliable_nesting(x):
+    result = 0
+    for i in range(x):
+        if i % 2 == 0:
+            for j in range(i):
+                if j % 3 == 0:
+                    for k in range(j):
+                        if k % 4 == 0:
+                            for l in range(k):
+                                if l % 5 == 0:
+                                    result += l
+                                else:
+                                    result -= l
+                        else:
+                            result *= k
+                else:
+                    result /= j
+        else:
+            for j in range(i):
+                if j % 3 == 0:
+                    for k in range(j):
+                        if k % 4 == 0:
+                            for l in range(k):
+                                if l % 5 == 0:
+                                    result *= l
+                                else:
+                                    result -= l
+                        else:
+                            result += k
+                else:
+                    result /= j
+    return result
+
+def main():
+    input_value = 5
+    result = unreliable_nesting(input_value)
+    print(f"Result for input {input_value}: {result}")
+
+if _name_ == "_main_":
+    main()
