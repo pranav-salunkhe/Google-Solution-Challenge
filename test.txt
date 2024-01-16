@@ -1,4 +1,6 @@
 def unreliable_nesting(x):
+    if x==0:
+        return 1
     result = 0
     for i in range(x):
         if i % 2 == 0:
@@ -29,7 +31,7 @@ def unreliable_nesting(x):
                             result += k
                 else:
                     result /= j
-    return result
+    return unreliable_nesting(x-1)
 
 def main():
     input_value = 5
