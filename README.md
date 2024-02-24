@@ -1,5 +1,9 @@
 # Software Reliability using CGWO + SVM
 
+# Demo
+  You can watch the demo for the above project on YouTube here:
+  `https://youtu.be/9-b5Hy_B02g?si=w9bSCFa-LXjmgeMX`
+
 # About CGWO
   Chaotic Grey Wolf Optimization, abbreviated as CGWO, is a bio-inspired feature selection algorithm. 
   It selects a subset of most useful features by replicating the techinque of hunting used by Grey Wolves in nature.
@@ -26,6 +30,14 @@
   ```
   python3 app.py
   ```
-  
+
+# Dataset
+  Nasa JM1 Dataset
+
+# Tech Stack
+  + Gemini API
+  + Flask
+  + TailwindCSS
+  + Python (sklearn, numpy, pandas)
 
   
